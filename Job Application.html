@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<head>
+    <title>Mini Job Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef2f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 520px;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #1a2a4a;
+            margin-bottom: 2px;
+        }
+
+        .subhead {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eceff5;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1.5px solid #d0d7e4;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #4a7cf7;
+            box-shadow: 0 0 0 3px rgba(74, 124, 247, 0.1);
+        }
+
+        textarea {
+            min-height: 55px;
+            resize: vertical;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .file-area {
+            position: relative;
+        }
+
+        .file-area input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-box {
+            background: #f8faff;
+            border: 2px dashed #c8d2e3;
+            border-radius: 8px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .file-box:hover {
+            border-color: #4a7cf7;
+            background: #f0f6ff;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #1a2a4a;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 150px;
+            font-size: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 6px 0 4px;
+        }
+
+        .btn {
+            padding: 9px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+        }
+
+        .btn-submit {
+            background: #4a7cf7;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #3565d9;
+        }
+
+        .btn-reset {
+            background: #e8ecf3;
+            color: #333;
+        }
+
+        .btn-reset:hover {
+            background: #d5dce8;
+        }
+
+        .message {
+            margin-top: 12px;
+            padding: 8px 12px;
+            background: #f8faff;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #444;
+            border-left: 4px solid #4a7cf7;
+        }
+
+        .alert-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+        }
+
+        .alert-bg.show {
+            display: flex;
+        }
+
+        .alert-card {
+            background: white;
+            max-width: 380px;
+            width: 100%;
+            padding: 25px 20px;
+            border-radius: 18px;
+            text-align: center;
+            animation: popIn 0.25s ease;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .alert-card .icon {
+            font-size: 40px;
+            background: #dcfce7;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .alert-card h2 {
+            font-size: 20px;
+            color: #1a2a4a;
+            margin-bottom: 4px;
+        }
+
+        .alert-card .details {
+            background: #f8faff;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: left;
+            margin: 12px 0 16px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .alert-card .details span {
+            display: block;
+        }
+
+        .alert-card .btn-close {
+            background: #4a7cf7;
+            color: white;
+            border: none;
+            padding: 8px 30px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .alert-card .btn-close:hover {
+            background: #3565d9;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .container {
+                padding: 18px;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Job Application</h1>
+        <div class="subhead">To build your future!!</div>
+
+        <form id="myForm">
+            <!-- Page 1: Personal Info -->
+            <div class="row">
+                <div class="form-group">
+                    <label>First Name *</label>
+                    <input type="text" id="firstName" placeholder="John" />
+                </div>
+                <div class="form-group">
+                    <label>Last Name *</label>
+                    <input type="text" id="lastName" placeholder="Doe" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" id="email" placeholder="john@example.com" />
+            </div>
+
+            <!-- Page 2: Contact & Position -->
+            <div class="row">
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="phone" placeholder="+1 234 567 890" />
+                </div>
+                <div class="form-group">
+                    <label>Position</label>
+                    <select id="position">
+                        <option>Frontend Developer</option>
+                        <option>Backend Engineer</option>
+                        <option selected>Full Stack Developer</option>
+                        <option>DevOps Engineer</option>
+                        <option>UI/UX Designer</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Page 3: Cover Letter -->
+            <div class="form-group">
+                <label>Cover Letter</label>
+                <textarea id="coverLetter" placeholder="Tell us about yourself..."></textarea>
+            </div>
+
+            <!-- Page 4: Resume Upload -->
+            <div class="form-group">
+                <label>Upload Resume</label>
+                <div class="file-area">
+                    <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,.txt" />
+                    <div class="file-box">
+                        <span>📎</span>
+                        <span>Choose file</span>
+                        <span class="file-name" id="fileDisplay">No file</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 5: Submit & Reset -->
+            <div class="btn-group">
+                <button type="submit" class="btn btn-submit">Submit</button>
+                <button type="reset" class="btn btn-reset">Reset</button>
+            </div>
+
+            <div class="message" id="msgBox">
+                 Fill all required fields (*) and click Submit.
+            </div>
+        </form>
+    </div>
+
+    <!-- Alert Modal -->
+    <div class="alert-bg" id="alertBg">
+        <div class="alert-card">
+            <div class="icon"></div>
+            <h2>Application Sent!</h2>
+            <div class="details" id="alertDetails">
+                <span> <strong id="aName">John Doe</strong></span>
+                <span> <span id="aEmail">john@example.com</span></span>
+                <span> <span id="aPosition">Full Stack Developer</span></span>
+                <span> <span id="aResume">resume.pdf</span></span>
+            </div>
+            <button class="btn-close" id="closeAlertBtn">✓ Done</button>
+        </div>
+    </div>
+
+    <script>
+        // Get all HTML elements
+        const firstName = document.getElementById('firstName');
+        const lastName = document.getElementById('lastName');
+        const email = document.getElementById('email');
+        const phone = document.getElementById('phone');
+        const position = document.getElementById('position');
+        const coverLetter = document.getElementById('coverLetter');
+        const resumeFile = document.getElementById('resumeFile');
+        const fileDisplay = document.getElementById('fileDisplay');
+        const msgBox = document.getElementById('msgBox');
+
+        // Alert elements
+        const alertBg = document.getElementById('alertBg');
+        const aName = document.getElementById('aName');
+        const aEmail = document.getElementById('aEmail');
+        const aPosition = document.getElementById('aPosition');
+        const aResume = document.getElementById('aResume');
+        const closeAlertBtn = document.getElementById('closeAlertBtn');
+
+        // Show file name when uploaded
+        resumeFile.addEventListener('change', function() {
+            if (resumeFile.files.length > 0) {
+                fileDisplay.textContent = resumeFile.files[0].name;
+            } else {
+                fileDisplay.textContent = 'No file';
+            }
+        });
+
+        // Reset button
+        const resetBtn = document.querySelector('.btn-reset');
+
+        resetBtn.addEventListener('click', function() {
+            fileDisplay.textContent = 'No file';
+            msgBox.innerHTML = 'Form has been reset.';
+            msgBox.style.borderLeftColor = '#4a7cf7';
+            firstName.style.borderColor = '#d0d7e4';
+            lastName.style.borderColor = '#d0d7e4';
+            email.style.borderColor = '#d0d7e4';
+        });
+
+        // Submit form
+        const form = document.getElementById('myForm');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const fName = firstName.value.trim();
+            const lName = lastName.value.trim();
+            const mail = email.value.trim();
+            const pos = position.value;
+            const resumeName = resumeFile.files.length > 0 ? resumeFile.files[0].name : 'No resume';
+
+            // Validate
+            let isValid = true;
+            let errorMsg = '';
+
+            if (fName === '') {
+                isValid = false;
+                firstName.style.borderColor = '#dc2626';
+                errorMsg = 'Please enter your first name.';
+            } else {
+                firstName.style.borderColor = '#d0d7e4';
+            }
+
+            if (lName === '') {
+                isValid = false;
+                lastName.style.borderColor = '#dc2626';
+                errorMsg = 'Please enter your last name.';
+            } else {
+                lastName.style.borderColor = '#d0d7e4';
+            }
+
+            if (mail === '' || !mail.includes('@') || !mail.includes('.')) {
+                isValid = false;
+                email.style.borderColor = '#dc2626';
+                errorMsg = 'Please enter a valid email (e.g., name@domain.com).';
+            } else {
+                email.style.borderColor = '#d0d7e4';
+            }
+
+            if (!isValid) {
+                msgBox.innerHTML = ' ' + errorMsg;
+                msgBox.style.borderLeftColor = '#dc2626';
+                return;
+            }
+
+            // Show success alert
+            aName.textContent = fName + ' ' + lName;
+            aEmail.textContent = mail;
+            aPosition.textContent = pos;
+            aResume.textContent = resumeName;
+
+            alertBg.classList.add('show');
+
+            msgBox.innerHTML = ' Application submitted successfully!';
+            msgBox.style.borderLeftColor = '#22c55e';
+        });
+
+        // Close alert
+        closeAlertBtn.addEventListener('click', function() {
+            alertBg.classList.remove('show');
+        });
+
+        alertBg.addEventListener('click', function(event) {
+            if (event.target === alertBg) {
+                alertBg.classList.remove('show');
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && alertBg.classList.contains('show')) {
+                alertBg.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
